@@ -62,6 +62,7 @@ def openCSV(fName):
     with open(fName) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',',)
         line_count = 0
+        filteredColumns=[]
         for row in csv_reader:
             if line_count == 0:
                 Columns = list(row)
@@ -72,7 +73,41 @@ def openCSV(fName):
             else:
                 Rows.append(row)
                 line_count += 1
+        for i in Columns:
+            if str(i) != "":
+                filteredColumns.append(i)
         print("Captured Columns : " + str(Columns) + "\nCaptured units : " + str(units) + "\nCaptured Rows : " + str(len(Rows)))
+        ctr=0
+        lenCtr=0
+        filteredRows=[]
+        while ctr < len(Rows):
+            rowBuilder=[]
+            lenCtr=0
+            while lenCtr < len(Rows[ctr]):
+                if Rows[ctr][lenCtr] != "":
+                    rowBuilder.append(Rows[ctr][lenCtr])
+                lenCtr+=1
+            filteredRows.append(rowBuilder)
+            ctr+=1
+        print(filteredColumns)
+        sensorDict = dict()
+        pair1=[]
+        modules=[]
+        for i in filteredRows:
+            lenCtr = 0
+            stampCtr = 0
+            while lenCtr < len(i) :
+                if filteredColumns[lenCtr] == "STAMP":
+                    appender=[("STAMP" + str(stampCtr)),i[lenCtr], i[lenCtr+1]]
+                    modules.append(appender)
+                    stampCtr+=1
+                lenCtr+=1
+        pair1.append(modules)
+        lenCtr=0
+        for p in pair1:
+            for r in p:
+                if r[0] == "STAMP0":
+                    print("Module = " +  + r)
 
 
 
