@@ -76,6 +76,7 @@ def openCSV(fName):
 
 
 
+
 averageActual = averageAF("actual.csv")
 averageSpecified = averageAF("specified.csv")
 print("The Actual A/F Ratio Averaged : " + str(averageActual) + "\nThe Specified A/F Ratio Averaged : " + str(averageSpecified))
