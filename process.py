@@ -1,4 +1,4 @@
-import statistics
+import statistics, csv
 def averageAF(fName):
     actualArray = []
     actual = open(fName)
@@ -26,7 +26,7 @@ def alertAF(fName):
     actual = open(fName)
     for row in actual:
         converted = float(row)
-        if converted < 1.8:
+        if converted < 1.2:
             converted = (converted*14.7)
             if (converted) < 11.8:
                 richArray.append(round(converted, 2))
@@ -48,6 +48,33 @@ def alertTiming(fName):
     print("The Timing Advance went above 30 Degrees " + str(len(highArray)) + " times.\n")
     print("Degrees Logged Above 30 : " + str(highArray))
 
+def openCSV(fName):
+    Columns = []
+    Rows = []
+    units = []
+    if (open("config.ini").readline() == "csvistrimmed : no"):
+        with open(fName, 'r') as fin:
+            data = fin.read().splitlines(True)
+        with open(fName, 'w') as fout:
+            fout.writelines(data[5:])
+        with open("config.ini", 'w') as fout:
+            fout.write("csvistrimmed : yes")
+    with open(fName) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',',)
+        line_count = 0
+        for row in csv_reader:
+            if line_count == 0:
+                Columns = list(row)
+                line_count += 1
+            elif line_count == 1:
+                units = list(row)
+                line_count += 1
+            else:
+                Rows.append(row)
+                line_count += 1
+        print("Captured Columns : " + str(Columns) + "\nCaptured units : " + str(units) + "\nCaptured Rows : " + str(len(Rows)))
+
+
 
 averageActual = averageAF("actual.csv")
 averageSpecified = averageAF("specified.csv")
@@ -59,3 +86,4 @@ alertAF("specified.csv")
 
 print("The average timing advance was : " + str(averageTiming("timing.csv")))
 alertTiming("timing.csv")
+openCSV("RichRest.csv")
