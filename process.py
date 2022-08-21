@@ -1,4 +1,5 @@
 import statistics, csv
+
 def averageAF(fName):
     actualArray = []
     actual = open(fName)
