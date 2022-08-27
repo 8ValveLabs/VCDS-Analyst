@@ -20,12 +20,21 @@ def scan_header(filtered_path):
         ]
     return header
 
+def count_markers(filtered_path: str) -> int:
+    count = 0
+    with open(filtered_path, encoding="utf-8") as file_opened:
+        if any(map(lambda x: x.startswith('Marker'), file_opened)):
+            count+=1     
+    return count
+
 def format_header(header):
+    if header == [""]: 
+        pass
     for count, value in enumerate(header):
         header[count] = value.split(',')
         
     for count, value in enumerate(header[1]):
-        header[0][count]+= f' {value} {header[2][count]}'
+        header[0][count]+= f' {value} {header[2][count]}' """ """
     
 
 
